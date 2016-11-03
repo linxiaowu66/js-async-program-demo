@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>testing form group</title>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+    function onSubmit(){
+        var myForm = document.getElementById('form');
+        var formData = new FormData(myForm);
+        for (var p of formData){
+            console.log(p);
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/get',
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(data){console.log(data)},
+            error: function(jqXHR){console.log(jqXHR)},
+        })
+
+    }
+    </script>
+</head>
+<body>
+    <form action="" method="post" name='info' id='form'>
+        <input type="text" name="user" />
+        <input type="text" name="email" />
+		<input type="file" name="file" />
+		<input type="file" name="file1" />
+    </form>
+    <button type="button" name='submit' onclick="onSubmit()">提交</button>
+</body>
+</html>
