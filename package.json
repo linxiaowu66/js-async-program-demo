@@ -6,11 +6,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-async-to-generator": "^6.16.0",
-    "babel-polyfill": "^6.16.0",
-    "babel-preset-es2015-node6": "^0.3.0",
-    "babel-register": "^6.18.0",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
