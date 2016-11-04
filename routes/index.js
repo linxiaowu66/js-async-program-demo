@@ -147,14 +147,28 @@ router.get('/generator-promise', function(req, res, next) {
 })
 /* ES7 Async - Async/Await*/
 async function getUrl (){
-  let result = await request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
-    return body;
+  let reqApi = new Promise((resolve, reject) => {
+    request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+      if (err){
+        reject(err);
+      } else{
+        resolve(body);
+      }
+    });
   });
-  console.log('result: ', result);
-
+  try{
+    let result = await Promise.all([reqApi, reqApi, reqApi, reqApi]);
+    return result;
+  } catch(err){
+    console.log(err)
+  }
 }
 router.get('/async', function(req, res, next) {
-  getUrl();
-  res.render('index', {title: 'express', result: 'err'});
+  getUrl().then(data => {
+    res.render('index', {title: 'express', result: data});
+  })
+  .catch(err => {
+    res.render('index', {title: 'express', result: err});
+  });
 });
 module.exports = router;
