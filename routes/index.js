@@ -146,5 +146,15 @@ router.get('/generator-promise', function(req, res, next) {
 
 })
 /* ES7 Async - Async/Await*/
+async function getUrl (){
+  let result = await request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+    return body;
+  });
+  console.log('result: ', result);
 
+}
+router.get('/async', function(req, res, next) {
+  getUrl();
+  res.render('index', {title: 'express', result: 'err'});
+});
 module.exports = router;
