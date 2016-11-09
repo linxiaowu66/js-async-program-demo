@@ -90,18 +90,33 @@ router.get('/generator', function(req, res, next) {
   function* generator(){
     let val = [];
     val[0] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+      if (err) {
+        g.throw(err)
+      }
       g.next(body);
     });
     val[1] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+      if (err) {
+        g.throw(err)
+      }
       g.next(body);
     });
     val[2] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+      if (err) {
+        g.throw(err)
+      }
       g.next(body);
     });
     val[3] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+      if (err) {
+        g.throw(err)
+      }
       g.next(body);
     });
     yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
+      if (err) {
+        g.throw(err)
+      }
       val.push(body)
       return finalRes.render('index', {title: 'express', result: val});
     });
