@@ -88,38 +88,25 @@ router.get('/promiseRace', function(req, res, next) {
 router.get('/generator', function(req, res, next) {
   const finalRes = res;
   function* generator(){
-    let val = [];
-    val[0] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
-      if (err) {
-        g.throw(err)
+    try{
+      let val = [];
+      function request_g(url){
+        request(url, (err, res, body) => {
+          if (err) {
+            g.throw(err)
+          }
+          g.next(body);
+        });
       }
-      g.next(body);
-    });
-    val[1] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
-      if (err) {
-        g.throw(err)
-      }
-      g.next(body);
-    });
-    val[2] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
-      if (err) {
-        g.throw(err)
-      }
-      g.next(body);
-    });
-    val[3] = yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
-      if (err) {
-        g.throw(err)
-      }
-      g.next(body);
-    });
-    yield request('https://api.douban.com/v2/user/linxiaowu', (err, res, body) => {
-      if (err) {
-        g.throw(err)
-      }
-      val.push(body)
+      val[0] = yield request_g('https://api.douban.com/v2/user/linxiaowu');
+      val[1] = yield request_g('https://api.douban.com/v2/user/linxiaowu');
+      val[2] = yield request_g('https://api.douban.com/v2/user/linxiaowu');
+      val[3] = yield request_g('https://api.douban.com/v2/user/linxiaowu');
+      val[4] = yield request_g('https://api.douban.com/v2/user/linxiaowu');
       return finalRes.render('index', {title: 'express', result: val});
-    });
+    } catch(err){
+      console.error(err);
+    }
   }
   var g = generator();
   g.next();
@@ -133,10 +120,6 @@ function *generator(){
     headers: {
       'User-Agent': 'request'
     }
-  }).then( d => {
-    return d;
-  }).catch( err => {
-    return err
   });
 
   /*you can Add more Async operation*/
@@ -144,8 +127,7 @@ function *generator(){
 router.get('/generator-promise', function(req, res, next) {
   const g = generator();
   let val = [];
-  iterator();
-  function iterator(){
+  (function iterator(){
     let next = g.next();
     if (next.done){
       return res.render('index', {title: 'express', result: val});
@@ -157,8 +139,7 @@ router.get('/generator-promise', function(req, res, next) {
       console.log(err);
       return res.render('index', {title: 'express', result: err});
     })
-  }
-
+  })()
 })
 /* ES7 Async - Async/Await*/
 async function getUrl (){
